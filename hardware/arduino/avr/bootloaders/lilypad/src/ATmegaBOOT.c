@@ -121,6 +121,12 @@
 #define LED_PORT PORTB
 #define LED_PIN  PINB
 #define LED      PINB7
+#elif defined (__AVR_ATmega32__)
+/* LED on PA7 */
+#define LED_DDR  DDRA
+#define LED_PORT PORTA
+#define LED_PIN  PINA
+#define LED      PINA7
 #else
 /* Onboard LED is connected to pin PB2 (e.g. Crumb8, Crumb168) */
 #define LED_DDR  DDRB

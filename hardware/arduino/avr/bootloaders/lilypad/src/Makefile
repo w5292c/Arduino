@@ -11,15 +11,15 @@
 PROGRAM    = ATmegaBOOT_168
 
 # enter the target CPU frequency
-AVR_FREQ   = 8000000L
+AVR_FREQ   = 16000000L
 
 # enter the parameters for the avrdude isp tool
 ISPTOOL	   = stk500v2
 ISPPORT	   = usb
 ISPSPEED   = -b 115200
 
-MCU_TARGET = atmega168
-LDSECTION  = --section-start=.text=0x3800
+MCU_TARGET = atmega32
+LDSECTION  = --section-start=.text=0x7000
 
 # the efuse should really be 0xf8; since, however, only the lower
 # three bits of that byte are used on the atmega168, avrdude gets

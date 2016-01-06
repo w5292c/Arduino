@@ -131,7 +131,6 @@
 #define LED      PINB5
 #endif
 
-
 /* monitor functions will only be compiled when using ATmega128, due to bootblock size constraints */
 #ifdef __AVR_ATmega128__
 #define MONITOR
@@ -345,7 +344,7 @@ int main(void)
     UBRRL = (uint8_t)(F_CPU/(BAUD_RATE*16L)-1);
     UBRRH = (F_CPU/(BAUD_RATE*16L)-1) >> 8;
     UCSRA = 0x00;
-    UCSRC = 0x06;
+    UCSRC = 0x06 | _BV(URSEL);
     UCSRB = _BV(TXEN)|_BV(RXEN);
 #endif
 
@@ -504,7 +503,11 @@ int main(void)
 		    if ((length.byte[0] & 0x01)) length.word++;	//Even up an odd number of bytes
 		    cli();					//Disable interrupts, just to be sure
 			// HACKME: EEPE used to be EEWE
+#ifdef __AVR_ATmega32__
+		    while(bit_is_set(EECR,EEWE));			//Wait for previous EEPROM writes to complete
+#else
 		    while(bit_is_set(EECR,EEPE));			//Wait for previous EEPROM writes to complete
+#endif
 		    asm volatile(
 				 "clr	r17		\n\t"	//page_word_count
 				 "lds	r30,address	\n\t"	//Address of FLASH location (in bytes)
@@ -921,11 +924,8 @@ void getNch(uint8_t count)
    	/* 20060803 DojoCorp:: Addon coming from the previous Bootloader*/               
 	//while(!(UCSRA & _BV(RXC)));
 	//UDR;
-    uint8_t i;
-    for(i=0;i<count;i++) {
     	getch(); // need to handle time out
-    }
-#endif		
+#endif
     }
 }
 

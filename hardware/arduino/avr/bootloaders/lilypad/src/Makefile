@@ -64,7 +64,7 @@ $(PROGRAM).elf: $(OBJ)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
 	
 $(OBJ): 
-	avr-gcc $(CFLAGS) $(LDFLAGS) -c -g -O2 -Wall -mmcu=atmega168 ATmegaBOOT.c -o ATmegaBOOT_168.o
+	avr-gcc $(CFLAGS) $(LDFLAGS) -c -g -O2 -Wall ATmegaBOOT.c -o ATmegaBOOT_168.o
 
 %.lst: %.elf
 	$(OBJDUMP) -h -S $< > $@
